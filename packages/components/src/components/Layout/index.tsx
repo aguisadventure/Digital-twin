@@ -46,18 +46,11 @@ export const baseRouterList = [
     filepath: 'pages/alarm/index.tsx',
   },
   {
-    label: 'RoleManagement',
-    key: 'roleManagement',
-    path: 'roleManagement',
+    label: 'TroubleShooting',
+    key: 'troubleShooting',
+    path: 'troubleShooting',
     icon: <LoginOutlined />,
-    filepath: 'pages/systemManagement/roleManagement/index.tsx',
-  },
-  {
-    label: 'UserManagement',
-    key: 'UserManagement',
-    path: 'UserManagement',
-    icon: <PlusCircleFilled />,
-    filepath: 'pages/systemManagement/userManagement/index.tsx',
+    filepath: 'pages/knowledge-graph/troubleShooting/index.tsx',
   },
 ];
 export default () => {

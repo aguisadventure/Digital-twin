@@ -10,8 +10,7 @@ import type { MenuItem } from 'components';
 import Dashboard from '@/pages/dashboard';
 import ErrorPage from '@/pages/error-page';
 import Workplace from '@/pages/alarm';
-import RoleManagement from '@/pages/systemManagement/roleManagement';
-import UserManagement from '@/pages/systemManagement/userManagement';
+import TroubleShooting from '@/pages/knowledge-graph/troubleShooting';
 import User from '@/pages/user';
 import Login from '@/pages/login';
 // import { loginAPI } from 'api'; // 替换成实际的后端API调用函数
@@ -76,12 +75,8 @@ export const defaultRoutes: any = [
         element: <Workplace />, // 对应的页面组件
       },
       {
-        path: 'roleManagement', // 新页面的路径
-        element: <RoleManagement />, // 对应的页面组件
-      },
-      {
-        path: 'userManagement', // 新页面的路径
-        element: <UserManagement />, // 对应的页面组件
+        path: 'troubleShooting', // 新页面的路径
+        element: <TroubleShooting />, // 对应的页面组件
       },
       {
         path: 'user', // 新页面的路径
