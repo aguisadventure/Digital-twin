@@ -16,23 +16,18 @@ const Buffer: React.FC = () => {
 
   var barWidth = 3;
   const option3_xdata = [
-    '原料仓A1',
-    '原料仓A2',
-    '原料仓A3',
-    '辅料仓B1',
-    '辅料仓C1',
-    '辅料仓D1',
-    '辅料仓E1',
-    '辅料仓F1',
-    '辅料仓G1',
-    '辅料仓H1',
-    '产品仓X1',
-    '产品仓X2',
-    '产品仓X3',
-    '包装仓Y1',
-    '包装仓Y2',
+    '原料仓A',
+    '辅料仓B',
+    '辅料仓C',
+    '辅料仓D',
+    '辅料仓E',
+    '辅料仓F',
+    '辅料仓G',
+    '辅料仓H',
+    '产品仓X',
+    '包装仓Y',
   ];
-  const option3_Ydata = [75, 62, 57, 42, 35, 32, 29, 27, 75, 62, 57, 10, 12, 15, 15];
+  const option3_Ydata = [75, 62, 57, 42, 35, 32, 29, 27, 75, 62];
 
   const option3_Ydatamax = [];
   var yMax2 = Math.max.apply(null, option3_Ydata);

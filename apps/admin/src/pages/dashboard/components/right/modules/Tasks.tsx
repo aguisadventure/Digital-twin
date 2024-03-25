@@ -1,3 +1,5 @@
+//记录原辅料消耗信息
+
 import React from 'react';
 import ReactECharts from 'echarts-for-react';
 import { useRequest } from 'ahooks';
@@ -7,7 +9,7 @@ import { GetCurrentLocationSummary } from 'apis';
 
 const Tasks: React.FC = () => {
   const backgroundColor = '#101736';
-  const color = ['#EAEA26', '#906BF9', '#FE5656', '#01E17E', '#3DD1F9', '#FFAD05']; //2个以上的series就需要用到color数组
+  const color = ['#EAEA26', '#906BF9', '#FE5656', '#01E17E', '#3DD1F9', '#FFAD05', '#13335F', '#FFDB75']; //2个以上的series就需要用到color数组
   const legend = {
     //data，就是取得每个series里面的name属性。
     orient: 'horizontal',
@@ -32,10 +34,14 @@ const Tasks: React.FC = () => {
     },
   };
   let seriesData = [
-    { name: 'A1', data: [120, 132, 101, 134, 90, 230, 210] },
-    { name: 'C3', data: [220, 182, 191, 234, 290, 330, 310] },
-    { name: 'Y2', data: [150, 232, 201, 154, 190, 330, 410] },
-    { name: 'A3', data: [320, 332, 301, 334, 390, 330, 320] },
+    { name: '烟叶', data: [120, 132, 101, 134, 90] },
+    { name: '加香剂', data: [220, 182, 191, 234, 290] },
+    { name: '填充剂', data: [150, 232, 201, 154, 190] },
+    { name: '滤嘴', data: [320, 332, 301, 334, 390] },
+    { name: '纸张', data: [130, 122, 91, 299, 30] },
+    { name: '胶水', data: [130, 66, 38, 387, 222] },
+    { name: '添加剂', data: [10, 122, 191, 234, 287] },
+    { name: '印刷油墨', data: [120, 22, 291, 34, 300] },
   ];
   const commonConfigFn = (index) => {
     return {
@@ -85,7 +91,7 @@ const Tasks: React.FC = () => {
     tooltip,
     legend,
     grid: {
-      top: '15%',
+      top: '25%',
       left: '3%',
       right: '4%',
       bottom: '5%',
@@ -112,7 +118,7 @@ const Tasks: React.FC = () => {
         show: false, //不显示grid竖向分割线
       },
 
-      data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+      data: ['1.1', '1.2', '1.3', '1.4', '1.5'],
     },
     yAxis: {
       type: 'value',

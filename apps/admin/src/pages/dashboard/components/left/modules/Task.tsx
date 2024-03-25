@@ -1,3 +1,5 @@
+//展示原料入库信息饼状图
+
 import React from 'react';
 import ReactECharts from 'echarts-for-react';
 import { useRequest } from 'ahooks';

@@ -1,3 +1,5 @@
+//记录成品出入库情况
+
 import React from 'react';
 import ReactECharts from 'echarts-for-react';
 import { useRequest } from 'ahooks';
@@ -8,9 +10,9 @@ import { GetCurrentLocationSummary } from 'apis';
 const Statistics: React.FC = () => {
   let chartData = {
     xdata: ['01/01', '01/02', '01/03', '01/04', '01/05'],
-    currentYearList: [10, 20, 30, 40, 50],
-    lastYearList: [20, 10, 30, 40, 20],
-    rateDataOne: [10, 40, 20, 30, 50],
+    warehousing: [10, 20, 30, 40, 50],
+    outbound: [5, 15, 10, 50, 70],
+    keeping: [5, 10, 30, 30, 10],
   };
   let dataZoomFlag = false;
   let zoomEnd = 100;
@@ -43,8 +45,8 @@ const Statistics: React.FC = () => {
           '<br/>' +
           params[2].seriesName +
           ':' +
-          params[2].value +
-          '%'
+          params[2].value //+
+          //'%'
         );
       },
     },
@@ -162,7 +164,7 @@ const Statistics: React.FC = () => {
       {
         type: 'bar',
         barMinHeight: 0,
-        name: '今年',
+        name: '入库量',
         itemStyle: {
           normal: {
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
@@ -178,12 +180,12 @@ const Statistics: React.FC = () => {
             borderWidth: 2,
           },
         },
-        data: chartData.currentYearList,
+        data: chartData.warehousing,
       },
       {
         type: 'bar',
         barMinHeight: 0,
-        name: '去年',
+        name: '出库量',
         itemStyle: {
           normal: {
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
@@ -199,13 +201,13 @@ const Statistics: React.FC = () => {
             borderWidth: 2,
           },
         },
-        data: chartData.lastYearList,
+        data: chartData.outbound,
         barCategoryGap: '40%',
       },
       {
         z: 9,
         yAxisIndex: 1,
-        name: '增幅',
+        name: '总仓储量',
         type: 'line',
         showAllSymbol: true,
         symbol: 'rect',
@@ -221,7 +223,7 @@ const Statistics: React.FC = () => {
           width: 1,
           color: '#44E5BE',
         },
-        data: chartData.rateDataOne,
+        data: chartData.keeping,
       },
     ],
   };

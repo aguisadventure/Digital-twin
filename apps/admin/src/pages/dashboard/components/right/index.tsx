@@ -8,6 +8,7 @@ import Panel from '@/components/Panel';
 import Allerway from './modules/Allerway';
 import Statistics from './modules/Statistics';
 import Tasks from './modules/Tasks';
+import RawConsumption from './modules/RawConsumption';
 import { Modal } from 'antd';
 
 import Handles from './modules/Handles';
@@ -44,7 +45,7 @@ const Right = () => {
             <Statistics />
           </Panel>
           <Panel
-            title="任务分布"
+            title="原、辅料消耗情况"
             right={
               <span className="hover:scale-120 transition-transform duration-300 ">
                 <UnorderedListOutlined
@@ -84,9 +85,7 @@ const Right = () => {
         onOk={() => setOpen(false)}
         onCancel={() => setOpen(false)}
       >
-        <p>some contents...</p>
-        <p>some contents...</p>
-        <p>some contents...</p>
+        <RawConsumption/>
       </Modal>
     </div>
   );
