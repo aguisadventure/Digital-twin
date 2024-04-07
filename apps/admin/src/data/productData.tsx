@@ -1,3 +1,5 @@
+//成品出入库统计
+
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -7,27 +9,31 @@ const ProducutData = () => {
 
   useEffect(() => {
     // 发送 GET 请求获取数据
-    axios.get('http://localhost:8080/api/product')
+    axios.get('http://localhost:8080/dashboard/product_chart/product', {
+      params: {
+          columns: ['warehousing_id', 'outbound_id', 'amount'] // 指定要返回的列
+      }
+    })
       .then(productResponse => {
         // 获取 product 表数据
         const productData = productResponse.data;
 
         // 再发送请求获取 warehousing 表数据
-        axios.get('http://localhost:8080/api/warehousing')
+        axios.get('http://localhost:8080/dashboard/product_chart/warehousing')
           .then(warehousingResponse => {
             // 获取 warehousing 表数据
             const warehousingData = warehousingResponse.data;
 
             // 再发送请求获取 outbound 表数据
-            axios.get('http://localhost:8080/api/outbound')
+            axios.get('http://localhost:8080/dashboard/product_chart/outbound')
               .then(outboundResponse => {
                 // 获取 outbound 表数据
                 const outboundData = outboundResponse.data;
 
                 // 合并数据
                 const mergedData = productData.map(productItem => {
-                  const warehousingItem = warehousingData.find(item => item.warehousing_id === productItem.warehousing_id);
-                  const outboundItem = outboundData.find(item => item.outbound_id === productItem.outbound_id);
+                  const warehousingItem = warehousingData.find(item => item.id === productItem.warehousing_id);
+                  const outboundItem = outboundData.find(item => item.id === productItem.outbound_id);
                   return {
                     ...productItem,
                     ...warehousingItem,

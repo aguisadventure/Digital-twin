@@ -16,10 +16,10 @@ function CigarettMachine(props: ICigaretteMachineProps) {
     const gltf = useLoader(
       GLTFLoader,
       process.env.NODE_ENV === 'development'
-        ? '/static/models/卷烟机.gltf'
-        : '/degital-twin-3d/static/models/卷烟机.gltf'
+        ? '/static/models/卷包车间.glb'
+        : '/degital-twin-3d/static/models/卷包车间.glb'
     );
-    gltf.scene.scale.set(500, 500, 500);
+    gltf.scene.scale.set(70, 70, 70);
     const clonedScene = gltf.scene.clone();
     // 如果需要对模型进行额外的操作，可以在这里添加代码
     return clonedScene;

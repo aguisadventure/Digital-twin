@@ -27,6 +27,7 @@ const Canva = (props) => {
         <ManufacturingWorkshop />
         <PackageWorkshop />
         <GeneralControlWorkshop />
+        {/* <Factory /> */}
         <StorageWorkshop />
         {props.children}
         {/* 帮助类 */}

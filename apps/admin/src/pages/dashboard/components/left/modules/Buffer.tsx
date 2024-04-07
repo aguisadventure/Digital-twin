@@ -1,33 +1,62 @@
 //展示各个库房的存储情况
 
-import React from 'react';
+import { React, useState, useEffect } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { useRequest } from 'ahooks';
 import { config } from '../../config';
 import * as echarts from 'echarts/core';
 import { GetCurrentLocationSummary } from 'apis';
+import axios from 'axios';
 
 const Buffer: React.FC = () => {
-  const { data } = useRequest(() => GetCurrentLocationSummary({}), {
-    ...config,
-  });
+  const [combinedData, setCombinedData] = useState<any[]>([]);
+  // 数据库实时加载
+  useEffect(() => {
+    // 发送 GET 请求获取数据
+    const tobaccoPromise = axios.get('http://47.109.192.248:8088/dashboard/storage_chart/raw_tobacco', {
+    });
+    const accessoriesPromise = axios.get('http://47.109.192.248:8088/dashboard/storage_chart/raw_accessories', {
+    });
 
-  const resultData = data?.resultData || {};
+    Promise.all([tobaccoPromise, accessoriesPromise])
+      .then(([tobaccoResponse, accessoriesResponse]) => {
+        // 在控制台输出获取的数据
+        console.log('从数据库获取到的原料数据：', tobaccoResponse.data);
+        console.log('从数据库获取到的辅料数据：', accessoriesResponse.data);
+        // 请求成功，处理数据
+        const storageDataValues = [tobaccoResponse.data.data];
+        const storageDataValues2 = Object.values(accessoriesResponse.data.data);
+        // 在控制台输出格式化后的数据
+        console.log('格式化后的原料数据：', storageDataValues);
+        console.log('格式化后的辅料数据：', storageDataValues2);
+        // 将两个数组合并成一个数组
+        const combinedValues = [...storageDataValues, ...storageDataValues2];
+        setCombinedData(combinedValues);
+      })
+      .catch(error => {
+        // 请求失败，输出错误信息
+        console.error('请求失败：', error);
+      });
+  }, []); // 第二个参数传入空数组，表示只在组件挂载时执行一次
+
+  // 如果数据为空，显示加载中的提示
+  if (combinedData.length === 0) {
+    return <div>Loading...</div>;
+  }
 
   var barWidth = 3;
   const option3_xdata = [
     '原料仓A',
-    '辅料仓B',
-    '辅料仓C',
-    '辅料仓D',
-    '辅料仓E',
-    '辅料仓F',
-    '辅料仓G',
-    '辅料仓H',
-    '产品仓X',
-    '包装仓Y',
+    '辅料仓B1',
+    '辅料仓C1',
+    '辅料仓D1',
+    '辅料仓E1',
+    '辅料仓F1',
+    '辅料仓G1',
+    '辅料仓H1',
   ];
-  const option3_Ydata = [75, 62, 57, 42, 35, 32, 29, 27, 75, 62];
+  //const option3_Ydata = [75, 62, 57, 42, 35, 32, 29, 27];
+  const option3_Ydata = combinedData;
 
   const option3_Ydatamax = [];
   var yMax2 = Math.max.apply(null, option3_Ydata);
@@ -173,7 +202,6 @@ const Buffer: React.FC = () => {
               color: '#fff',
             },
             formatter: function (a) {
-              console.log(a);
               return option3_Ydata[a.dataIndex];
             },
           },

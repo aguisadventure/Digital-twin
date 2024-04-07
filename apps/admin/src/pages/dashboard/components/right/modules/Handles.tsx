@@ -27,6 +27,10 @@ const Tools = () => {
           <Radio.Group>
             <Radio value="0">按键控制</Radio>
             <Radio value="1">自由控制</Radio>
+            <Radio value="2">制丝车间</Radio>
+            <Radio value="3">卷包车间</Radio>
+            <Radio value="4">总控车间</Radio>
+            <Radio value="5">仓储车间</Radio>
           </Radio.Group>
         </Form.Item>
       </Form>

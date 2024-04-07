@@ -5,10 +5,12 @@ import { useFrame } from '@react-three/fiber';
 import React, { useState } from 'react';
 import CigarettMachine from './cigaretteMachine';
 import CigarettMachine2 from './cigaretteMachine2';
+import MxwCar from './mxwCar';
 import { observer } from 'mobx-threejs-store';
 import { useThree } from '@react-three/fiber';
 
 import * as THREE from 'three';
+import animationData from '../data/animation';
 const { Vector3 } = THREE;
 
 let index = 0;
@@ -18,12 +20,17 @@ const WarehouseMap = observer(() => {
   const { camera } = useThree();
 
   const [cigaretteMachineData, setcigaretteMachineData] = useState({
-    position: [3100, 0, 1000],
-    rotation: [0, 0, 0],
+    position: [2600, 0, -700],
+    rotation: [0, -1.57, 0],
   });
-  const [cigaretteMachineData2, setcigaretteMachineData2] = useState({
+  /* const [cigaretteMachineData2, setcigaretteMachineData2] = useState({
     position: [-2700, 0, 1150],
     rotation: [0, 0, 0],
+  }); */
+  const [mxwCarData, setMxwCarData] = useState({
+    position: [400, 0, 700],
+    hasGoods: false,
+    radian: 0,
   });
 
   const statsRef = useRef<Stats | null>(null);
@@ -44,25 +51,63 @@ const WarehouseMap = observer(() => {
     return rad;
   }
 
-  function getHeight(type: string, data: any, delta: number) {
-    let h = 0;
-    if (type === 'liftArm') {
-      const { formLiftH, toLiftH, time } = data;
-      h = ((toLiftH - formLiftH) / time) * delta;
-    } else if (type === 'forkArm') {
-      const { formForkH, toForkH, time } = data;
-      h = ((toForkH - formForkH) / time) * delta;
-    }
-    return h;
-  }
+  useFrame((_, delta) => {
+    if (index > animationData.length) return;
+    delta *= 1000;
+    const curList = animationData[index];
+    const time = curList[0].time;
+    for (let j = 0; j < curList.length; j++) {
+      const cur = curList[j];
+      const { el, hasGoods, radian, type } = cur;
+      let dis: number[] = [0, 0, 0];
+      let rad = 0;
+      if (type === 'move') dis = getDis(delta, cur);
+      if (type === 'rotate') rad = getRad(delta, cur);
+      const [dis_x, dis_y, dis_z] = dis;
+      if (el === 'mxwCar') {
+        setMxwCarData((state) => {
+          const [x, y, z] = state.position;
+          return {
+            position: [x + dis_x, y + dis_y, z + dis_z],
+            hasGoods,
+            radian: (state.radian || radian) + rad,
+          };
+        });
 
+/*         // 相机始终跟随mxwCar
+        camera.position.set(
+          mxwCarData.position[0],
+          mxwCarData.position[1] + 100,
+          mxwCarData.position[2] + 300
+        );
+        //相机跟随小车旋转
+        //camera.rotation.setY(mxwCarData.radian);
+        camera.rotation.set(0, mxwCarData.radian, 0);
+        // 相机角度跟随
+        camera.lookAt(mxwCarData.position[0], mxwCarData.position[1], mxwCarData.position[2]); */
+        
+      }
+    }
+    cntTime += delta;
+    if (cntTime >= time) {
+      cntTime = 0;
+      index++;
+      if (index >= animationData.length) {
+        setMxwCarData({ position: [400, 0, 700], hasGoods: false, radian: 0 });
+        index = 0;
+      }
+    }
+  });
+
+  const mxwCar = useMemo(() => <MxwCar {...mxwCarData}></MxwCar>, [mxwCarData]);
   const cigaretteMachine1 = useMemo(() => <CigarettMachine {...cigaretteMachineData}></CigarettMachine>, [cigaretteMachineData])
-  const cigaretteMachine2 = useMemo(() => <CigarettMachine2 {...cigaretteMachineData2}></CigarettMachine2>, [cigaretteMachineData2])
+  /* const cigaretteMachine2 = useMemo(() => <CigarettMachine2 {...cigaretteMachineData2}></CigarettMachine2>, [cigaretteMachineData2]) */
   return (
     <group>
       {/* <Ground /> */}
       {cigaretteMachine1}
-      {cigaretteMachine2}
+      {mxwCar}
+      {/* {cigaretteMachine2} */}
     </group>
   );
 });

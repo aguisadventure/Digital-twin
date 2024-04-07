@@ -2,29 +2,33 @@
 
 import { useEffect, useState } from 'react';
 import { ScrollBoard } from '@jiaminghi/data-view-react';
+import axios from 'axios';
 
 const AccessoryPanel = () => {
-  /* // 定义存储数据的状态
+  // 定义存储数据的状态
   const [accessoriesData, setAccessoriesData] = useState([]);
-  // 定义后端 API 的基本 URL
-  const baseURL = 'http://localhost:8080';
-  // 构建参数对象
-  const params = {
-    columns: ['入库单号', '种类', '名称', '供应商'], // 指定要返回的列
-    filters: {
-      入库单号: '某某' // 指定入库单号的值
-    }
-  };
 
+  // 数据库实时加载
   useEffect(() => {
     // 发送 GET 请求获取数据
-    axios.get('/api/accessories', {
-      baseURL: baseURL,
-      params: params
+    axios.get('http://47.109.192.248:8088/dashboard/accessory_list/raw_accessories', {
     })
       .then(response => {
-        // 请求成功，设置数据状态
-        setAccessoriesData(response.data);
+        // 在控制台输出获取的数据
+        console.log('从数据库获取到的数据：', response.data);
+        // 请求成功，处理数据
+        const formattedData = response.data.data.map(item => {
+          return [
+            item.warehousingId,
+            item.type,
+            item.name,
+            item.supplier,
+            item.amount
+          ];
+        });
+        setAccessoriesData(formattedData);
+        // 在控制台输出格式化后的数据
+        console.log('格式化后的数据：', formattedData);
       })
       .catch(error => {
         // 请求失败，输出错误信息
@@ -32,24 +36,26 @@ const AccessoryPanel = () => {
       });
   }, []); // 第二个参数传入空数组，表示只在组件挂载时执行一次
 
+
   // 如果数据为空，显示加载中的提示
-  if (accessoriesData.length === 0) {
+  if (setAccessoriesData.length === 0) {
     return <div>Loading...</div>;
-  } */
+  }
 
   // 构建配置对象
-/*   const config = {
-    header: ['入库单号', '种类', '名称', '供应商', '数量'],
+  const config = {
+    header: ['入库id', '种类', '名称', '供应商', '数量'],
     data: accessoriesData,
     headerBGC: '#00fff138',
     oddRowBGC: '#00000017',
     evenRowBGC: '#ededed13',
     headerHeight: 28,
     rowNum: 7,
-    columnWidth: [100, 80, 90, 100, 110],
-  }; */
+    columnWidth: [70, 100, 150, 150, 110],
+  };
 
-  const config = {
+  // 最初始的死数据
+  /* const config = {
     header: ['入库单号', '种类', '名称', '供应商', '数量'],
     data: [
       ['RK2024001', '加香剂', '水果香料', 'ABC香料厂', '10kg'],
@@ -66,11 +72,11 @@ const AccessoryPanel = () => {
     headerHeight: 28,
     rowNum: 7,
     columnWidth: [100, 80, 90, 100, 110],
-  };
+  }; */
   return (
     <ScrollBoard
       config={config}
-      style={{ width: '100%', height: '220px', fontSize: '12px', marginBottom: '8px' }}
+      style={{ width: '100%', height: '240px', fontSize: '12px', marginBottom: '8px' }}
     />
   );
 };

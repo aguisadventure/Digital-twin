@@ -43,8 +43,8 @@ const House = (props: IHouse) => {
     width = 1400,
     length = 1200,
     height = 400,
-    // aside_width = 130,
-    // aside_length = 130,
+    aside_width = 130,
+    aside_length = 130,
     position = new THREE.Vector3(200, 0, 0),
     space_width = 10000,
     space_length = 12000,
@@ -94,7 +94,7 @@ const House = (props: IHouse) => {
   roofTexture.rotation = Math.PI / 2;
   roofTexture.repeat.set(0.005, 0.005);
 
-/*   const floorTexture = new THREE.TextureLoader().load(
+  const floorTexture = new THREE.TextureLoader().load(
     process.env.NODE_ENV == 'development'
       ? '/static/floor_02.png'
       : `/degital-twin-3d/static/floor_02.png`
@@ -102,7 +102,7 @@ const House = (props: IHouse) => {
   floorTexture.wrapS = THREE.RepeatWrapping; // 水平方向重复
   floorTexture.wrapT = THREE.RepeatWrapping; // 垂直方向重复
   floorTexture.repeat.set(0.01, 0.01);
- */
+
 /*   const roadTexture = new THREE.TextureLoader().load(
     process.env.NODE_ENV == 'development'
       ? '/static/road2.jpg'
@@ -264,7 +264,7 @@ const House = (props: IHouse) => {
   // };
 
   // 仓库底下的那一块地板，会比仓库略大
-  /* const HouseFloor = () => {
+/*   const HouseFloor = () => {
     return (
       <extrudeGeometry
         args={[
@@ -275,7 +275,7 @@ const House = (props: IHouse) => {
             new THREE.Vector2(width + aside_width, length + aside_length+10000, 20),
             new THREE.Vector2(-width - aside_width, length + aside_length+10000, 20),
           ]),
-          { depth: floorThickness },
+          { depth: wallThickness },
         ]}
       />
     );
@@ -435,6 +435,9 @@ const House = (props: IHouse) => {
               ]}
             />
           </Base>
+          {/* <Subtraction>
+            <HouseFloor></HouseFloor>
+          </Subtraction> */}
         </Geometry>
         <meshStandardMaterial color={'white'} />
       </mesh>

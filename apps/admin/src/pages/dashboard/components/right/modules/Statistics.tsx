@@ -1,22 +1,176 @@
 //记录成品出入库情况
 
-import React from 'react';
+import { React, useState, useEffect } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { useRequest } from 'ahooks';
 import { config } from '../../config';
 import * as echarts from 'echarts/core';
 import { GetCurrentLocationSummary } from 'apis';
+import axios from 'axios';
 
 const Statistics: React.FC = () => {
+  /* const [warehousingData, setWarehousingData] = useState({
+    "code": 1,
+    "data": [
+      {
+        "productId": null,
+        "warehousingId": null,
+        "outboundId": null,
+        "accessories1Id": null,
+        "accessories2Id": null,
+        "accessories3Id": null,
+        "accessories4Id": null,
+        "accessories5Id": null,
+        "accessories6Id": null,
+        "accessories7Id": null,
+        "tobaccoId": null,
+        "productDate": "2024-04-11T16:00:00.000+00:00",
+        "output": null,
+        "amount": 2920
+      },
+      {
+        "productId": null,
+        "warehousingId": null,
+        "outboundId": null,
+        "accessories1Id": null,
+        "accessories2Id": null,
+        "accessories3Id": null,
+        "accessories4Id": null,
+        "accessories5Id": null,
+        "accessories6Id": null,
+        "accessories7Id": null,
+        "tobaccoId": null,
+        "productDate": "2024-04-10T16:00:00.000+00:00",
+        "output": null,
+        "amount": 3550
+      },
+      {
+        "productId": null,
+        "warehousingId": null,
+        "outboundId": null,
+        "accessories1Id": null,
+        "accessories2Id": null,
+        "accessories3Id": null,
+        "accessories4Id": null,
+        "accessories5Id": null,
+        "accessories6Id": null,
+        "accessories7Id": null,
+        "tobaccoId": null,
+        "productDate": "2024-04-09T16:00:00.000+00:00",
+        "output": null,
+        "amount": 2700
+      },
+      {
+        "productId": null,
+        "warehousingId": null,
+        "outboundId": null,
+        "accessories1Id": null,
+        "accessories2Id": null,
+        "accessories3Id": null,
+        "accessories4Id": null,
+        "accessories5Id": null,
+        "accessories6Id": null,
+        "accessories7Id": null,
+        "tobaccoId": null,
+        "productDate": "2024-04-08T16:00:00.000+00:00",
+        "output": null,
+        "amount": 2700
+      },
+      {
+        "productId": null,
+        "warehousingId": null,
+        "outboundId": null,
+        "accessories1Id": null,
+        "accessories2Id": null,
+        "accessories3Id": null,
+        "accessories4Id": null,
+        "accessories5Id": null,
+        "accessories6Id": null,
+        "accessories7Id": null,
+        "tobaccoId": null,
+        "productDate": "2024-04-07T16:00:00.000+00:00",
+        "output": null,
+        "amount": 2691
+      },
+      {
+        "productId": null,
+        "warehousingId": null,
+        "outboundId": null,
+        "accessories1Id": null,
+        "accessories2Id": null,
+        "accessories3Id": null,
+        "accessories4Id": null,
+        "accessories5Id": null,
+        "accessories6Id": null,
+        "accessories7Id": null,
+        "tobaccoId": null,
+        "productDate": "2024-04-06T16:00:00.000+00:00",
+        "output": null,
+        "amount": 2842
+      }
+    ]
+  });
+
+  const dateValues = warehousingData.data.map(item => {
+    return [
+      item.productDate.substring(5,10)
+    ];
+  });
+
+  const warehousingDataValues = warehousingData.data.map(item => item.amount);
+  console.log(warehousingDataValues); */
+
+  const [warehousingData, setWarehousingData] = useState([]);
+  const [outboundData, setOutboundData] = useState([]);
+  const [dateData, setDateData] = useState([]);
+  // 数据库实时加载
+  useEffect(() => {
+    // 发送 GET 请求获取数据
+    const warehousingPromise = axios.get('http://47.109.192.248:8088/dashboard/product_chart/product_warehousing', {
+    });
+    const outboundPromise = axios.get('http://47.109.192.248:8088/dashboard/product_chart/product_outbound', {
+    });
+
+    Promise.all([warehousingPromise, outboundPromise])
+      .then(([warehousingResponse, outboundResponse]) => {
+        // 在控制台输出获取的数据
+        console.log('从数据库获取到的原料数据：', warehousingResponse.data);
+        console.log('从数据库获取到的辅料数据：', outboundResponse.data);
+        // 请求成功，处理数据
+        const warehousingDataValues = warehousingResponse.data.data.map(item => item.amount);
+        const outboundDataValues = outboundResponse.data.data.map(item => item.amount);
+        const dateValues = outboundResponse.data.data.map(item => {
+          return [
+            item.productDate.substring(5,10)
+          ];
+        });
+        // 在控制台输出格式化后的数据
+        console.log('格式化后的入库数据：', warehousingDataValues);
+        console.log('格式化后的出库数据：', outboundDataValues);
+        console.log('格式化后的日期：', dateValues);
+        setWarehousingData(warehousingDataValues);
+        setOutboundData(outboundDataValues);
+        setDateData(dateValues);
+      })
+      .catch(error => {
+        // 请求失败，输出错误信息
+        console.error('请求失败：', error);
+      });
+  }, []); // 第二个参数传入空数组，表示只在组件挂载时执行一次
+
   let chartData = {
-    xdata: ['01/01', '01/02', '01/03', '01/04', '01/05'],
-    warehousing: [10, 20, 30, 40, 50],
-    outbound: [5, 15, 10, 50, 70],
-    keeping: [5, 10, 30, 30, 10],
+    //xdata: ['01/01', '01/02', '01/03', '01/04', '01/05'],
+    //warehousing: [1, 1, 1, 1, 1],
+    //outbound: [5000, 1500, 1000, 5000, 7000, 1000],
+    //keeping: [500, 1000, 3000, 3000, 1000, 1000],
+    xdata: dateData,
+    warehousing: warehousingData,
+    outbound: outboundData,
+    keeping: warehousingData
   };
   let dataZoomFlag = false;
   let zoomEnd = 100;
-  if (chartData.xdata.length > 6) {
+  if (chartData.xdata.length > 8) {
     dataZoomFlag = true;
     zoomEnd = 60;
   }
@@ -24,7 +178,7 @@ const Statistics: React.FC = () => {
     grid: {
       top: '10%',
       left: '3%',
-      right: '10%',
+      right: '18%',
       bottom: '13%',
     },
     barWidth: 6,

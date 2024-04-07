@@ -1,6 +1,8 @@
 //展示原料辅料的每日消耗情况
 
+import { useEffect, useState } from 'react';
 import { ScrollBoard } from '@jiaminghi/data-view-react';
+import axios from 'axios';
 
 const RawConsumption = () => {
   const config = {

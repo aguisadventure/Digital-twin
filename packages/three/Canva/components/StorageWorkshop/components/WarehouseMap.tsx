@@ -17,14 +17,14 @@ let cntTime = 0;
 const WarehouseMap = observer(() => {
   const { camera } = useThree();
 
-  const [cigaretteMachineData, setcigaretteMachineData] = useState({
+  /* const [cigaretteMachineData, setcigaretteMachineData] = useState({
     position: [3100, 0, 1000],
     rotation: [0, 0, 0],
   });
   const [cigaretteMachineData2, setcigaretteMachineData2] = useState({
     position: [-2700, 0, 1150],
     rotation: [0, 0, 0],
-  });
+  }); */
 
   const statsRef = useRef<Stats | null>(null);
 
@@ -56,13 +56,13 @@ const WarehouseMap = observer(() => {
     return h;
   }
 
-  const cigaretteMachine1 = useMemo(() => <CigarettMachine {...cigaretteMachineData}></CigarettMachine>, [cigaretteMachineData])
-  const cigaretteMachine2 = useMemo(() => <CigarettMachine2 {...cigaretteMachineData2}></CigarettMachine2>, [cigaretteMachineData2])
+/*   const cigaretteMachine1 = useMemo(() => <CigarettMachine {...cigaretteMachineData}></CigarettMachine>, [cigaretteMachineData])
+  const cigaretteMachine2 = useMemo(() => <CigarettMachine2 {...cigaretteMachineData2}></CigarettMachine2>, [cigaretteMachineData2]) */
   return (
     <group>
       {/* <Ground /> */}
-      {cigaretteMachine1}
-      {cigaretteMachine2}
+      {/* {cigaretteMachine1}
+      {cigaretteMachine2} */}
     </group>
   );
 });

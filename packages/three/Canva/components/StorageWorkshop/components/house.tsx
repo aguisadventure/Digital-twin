@@ -42,6 +42,8 @@ const House = (props: IHouse) => {
     width = 1400,
     length = 1200,
     height = 400,
+    aside_width = 130,
+    aside_length = 130,
     position = new THREE.Vector3(200, 0, -3000),
     space_width = 10000,
     space_length = 12000,
@@ -87,6 +89,15 @@ const House = (props: IHouse) => {
   roofTexture.wrapT = THREE.RepeatWrapping; // 垂直方向重复
   roofTexture.rotation = Math.PI / 2;
   roofTexture.repeat.set(0.005, 0.005);
+
+  const floorTexture = new THREE.TextureLoader().load(
+    process.env.NODE_ENV == 'development'
+      ? '/static/floor_02.png'
+      : `/degital-twin-3d/static/floor_02.png`
+  );
+  floorTexture.wrapS = THREE.RepeatWrapping; // 水平方向重复
+  floorTexture.wrapT = THREE.RepeatWrapping; // 垂直方向重复
+  floorTexture.repeat.set(0.01, 0.01);
 
   const getBackWallShape = () => {
     const shape = getPointToShape([
@@ -199,12 +210,30 @@ const House = (props: IHouse) => {
     return shape;
   };
 
+/*   // 仓库底下的那一块地板，会比仓库略大
+  const HouseFloor = () => {
+    return (
+      <extrudeGeometry
+        args={[
+          getPointToShape([
+            // 下面的不要
+            new THREE.Vector2(-width - aside_width, -length - aside_length),
+            new THREE.Vector2(width + aside_width, -length - aside_length),
+            new THREE.Vector2(width + aside_width, length + aside_length),
+            new THREE.Vector2(-width - aside_width, length + aside_length),
+          ]),
+          { depth: wallThickness },
+        ]}
+      />
+    );
+  }; */
+
   return (
     <group position={position} receiveShadow>
       {/* 草坪和场景 */}
       <mesh rotation={[Math.PI / 2, 0, 0]}>
         {/* <mesh> */}
-        {/* <Geometry>
+        <Geometry>
           <Base>
             <extrudeGeometry
               args={[
@@ -219,9 +248,17 @@ const House = (props: IHouse) => {
               ]}
             />
           </Base>
-        </Geometry> */}
+          {/* <Subtraction>
+            <HouseFloor></HouseFloor>
+          </Subtraction> */}
+        </Geometry>
         <meshStandardMaterial color={'white'} />
       </mesh>
+      {/* 地板 */}
+      {/* <mesh rotation={[Math.PI / 2, 0, 0]} receiveShadow>
+        <HouseFloor></HouseFloor>
+        <meshPhongMaterial map={floorTexture} reflectivity={1.5}></meshPhongMaterial>
+      </mesh> */}
       {/* 后面的墙壁,招牌的另一面 */}
       <mesh position={new THREE.Vector3(0, height, length - wallThickness)} receiveShadow>
         <extrudeGeometry

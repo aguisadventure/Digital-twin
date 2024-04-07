@@ -43,7 +43,7 @@ const House = (props: IHouse) => {
     height = 400,
     aside_width = 130,
     aside_length = 130,
-    position = new THREE.Vector3(200, 0, 0),
+    position = new THREE.Vector3(200, 0, -3000),
     space_width = 10000,
     space_length = 12000,
     road_width = 600,
